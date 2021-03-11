@@ -63,7 +63,7 @@ char *copy_str(char *inStr, short len){
 // print the tokens pointed to by toks
 void print_tokens(char **toks){
     int i = 0;
-    while(toks[i] != '\0'){
+    while(toks[i] != 0){
       printf("%s\n", toks[i]);
       i++;
     }
@@ -72,7 +72,7 @@ void print_tokens(char **toks){
 void free_tokens(char **toks){
   int i =0;
 
-  while (toks[i] != '\0')
+  while (toks[i] != 0)
     free(toks[i]);
   free(toks);
 }
@@ -93,4 +93,26 @@ void free_tokens(char **toks){
 
 */
 
-char **tokenize(char* str);
+char **tokenize(char* str){
+  int words = count_words(str);
+  char *start;
+  char *end;
+  int len=0;
+  
+  char **tokens = (char **) malloc(sizeof(char *) * (words + 1));
+
+  char **ptr = tokens;
+  int i=0;
+  for(; i < words; i++){
+    start = word_start(str);
+    end = word_end(start);
+    len = end-start;
+    
+    tokens[i] = copy_str(start,len+1);
+
+    str = word_end(end);
+  }
+  tokens[i]= '\0';
+  return tokens;
+}
+  
